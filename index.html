@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>想いみっけ｜走り書きから心を動かすSNS記事へ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Noto Sans JP', sans-serif; background: linear-gradient(135deg, #f8f6f0 0%, #fdfcf7 100%); }
+  .font-serif-jp { font-family: 'Noto Serif JP', serif; }
+  .bg-spc-navy { background-color: #223670; }
+  .text-spc-navy { color: #223670; }
+  .bg-spc-gold { background-color: #D0A900; }
+  .text-spc-gold { color: #D0A900; }
+  .border-spc-navy { border-color: #223670; }
+  .border-spc-gold { border-color: #D0A900; }
+  .hover-spc-gold:hover { background-color: #B8950A; }
+  .output-card { transition: all 0.3s ease; }
+  .output-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(34, 54, 112, 0.15); }
+  .loading-dot { animation: pulse 1.5s ease-in-out infinite; }
+  .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+</style>
+</head>
+<body class="min-h-screen">
+<header class="bg-spc-navy text-white py-6 shadow-lg">
+  <div class="max-w-3xl mx-auto px-4">
+    <h1 class="font-serif-jp text-3xl font-bold flex items-center gap-2">
+      <span class="text-spc-gold">想い</span>みっけ
+    </h1>
+    <p class="text-sm mt-1 opacity-90">走り書きから、心を動かすSNS記事へ</p>
+  </div>
+</header>
+<main class="max-w-3xl mx-auto px-4 py-8">
+  <div id="usageCounter" class="bg-white rounded-lg p-4 mb-6 border-l-4 border-spc-gold shadow-sm">
+    <p class="text-sm text-gray-700">無料体験：残り <span id="remainingCount" class="font-bold text-spc-navy text-lg">3</span> 回</p>
+  </div>
+  <section class="bg-white rounded-xl p-6 shadow-md mb-6">
+    <h2 class="font-serif-jp text-xl font-bold text-spc-navy mb-4">あなたの想いを聞かせてください</h2>
+<div class="mb-4">
+  <label class="block text-sm font-medium text-gray-700 mb-2">
+    走り書きメモ <span class="text-red-500">必須</span>
+  </label>
+  <textarea id="memo" rows="4" placeholder="例：お客様の決算が無事終わった 涙ぐんでお礼を言われた 嬉しかった 報われた気がした"
+    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-spc-navy"></textarea>
+</div>
+
+<div class="mb-4">
+  <label class="block text-sm font-medium text-gray-700 mb-2">
+    実際にあった出来事を1行で <span class="text-gray-400 text-xs">任意・精度が上がります</span>
+  </label>
+  <input type="text" id="event" placeholder="例：決算報告書をお渡しした帰り際の出来事"
+    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-spc-navy">
+</div>
+
+<div class="mb-4">
+  <label class="block text-sm font-medium text-gray-700 mb-2">
+    感情キーワード3つ <span class="text-gray-400 text-xs">任意</span>
+  </label>
+  <div class="grid grid-cols-3 gap-2">
+    <input type="text" id="emo1" placeholder="安堵" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-spc-navy">
+    <input type="text" id="emo2" placeholder="誇り" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-spc-navy">
+    <input type="text" id="emo3" placeholder="感謝" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-spc-navy">
+  </div>
+</div>
+
+<div class="mb-2">
+  <label class="block text-sm font-medium text-gray-700 mb-2">
+    参照URL <span class="text-gray-400 text-xs">任意・ブログや商品ページのシェア時に</span>
+  </label>
+  <input type="url" id="shareUrl" placeholder="https://example.com/blog/..."
+    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-spc-navy">
+</div>
+  </section>
+  <section class="bg-white rounded-xl p-6 shadow-md mb-6">
+    <h2 class="font-serif-jp text-xl font-bold text-spc-navy mb-4">投稿の設定</h2>
+<div class="mb-4">
+  <label class="block text-sm font-medium text-gray-700 mb-2">プラットフォーム</label>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+    <button type="button" data-platform="facebook" class="platform-btn px-3 py-2 border-2 border-spc-navy bg-spc-navy text-white rounded-lg text-sm font-medium">Facebook</button>
+    <button type="button" data-platform="instagram" class="platform-btn px-3 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-lg text-sm font-medium">Instagram</button>
+    <button type="button" data-platform="youtube" class="platform-btn px-3 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-lg text-sm font-medium">YouTubeショート</button>
+    <button type="button" data-platform="gmap" class="platform-btn px-3 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-lg text-sm font-medium">Googleマップ</button>
+  </div>
+</div>
+
+<div class="mb-4">
+  <label class="block text-sm font-medium text-gray-700 mb-2">トーン</label>
+  <div class="grid grid-cols-3 gap-2">
+    <button type="button" data-tone="warm" class="tone-btn px-3 py-2 border-2 border-spc-navy bg-spc-navy text-white rounded-lg text-sm">あたたかい</button>
+    <button type="button" data-tone="professional" class="tone-btn px-3 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-lg text-sm">プロフェッショナル</button>
+    <button type="button" data-tone="friendly" class="tone-btn px-3 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-lg text-sm">親しみやすい</button>
+  </div>
+</div>
+
+<div class="mb-2">
+  <label class="block text-sm font-medium text-gray-700 mb-2">長さ</label>
+  <div class="grid grid-cols-3 gap-2">
+    <button type="button" data-length="short" class="length-btn px-3 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-lg text-sm">短め 250字</button>
+    <button type="button" data-length="standard" class="length-btn px-3 py-2 border-2 border-spc-navy bg-spc-navy text-white rounded-lg text-sm">標準 500字</button>
+    <button type="button" data-length="long" class="length-btn px-3 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-lg text-sm">しっかり 800字</button>
+  </div>
+</div>
+  </section>
+  <button id="generateBtn" class="w-full bg-spc-gold hover-spc-gold text-white font-bold py-4 rounded-xl shadow-md text-lg transition-colors">
+    想いをカタチに変える
+  </button>
+  <div id="loading" class="hidden text-center py-8">
+    <p class="text-spc-navy font-medium mb-3">あなたの想いを読み解いています...</p>
+    <div class="flex justify-center gap-2">
+      <div class="loading-dot w-3 h-3 bg-spc-gold rounded-full"></div>
+      <div class="loading-dot w-3 h-3 bg-spc-gold rounded-full"></div>
+      <div class="loading-dot w-3 h-3 bg-spc-gold rounded-full"></div>
+    </div>
+  </div>
+  <section id="results" class="hidden mt-8">
+    <h2 class="font-serif-jp text-2xl font-bold text-spc-navy mb-4">3つの想い、できました</h2>
+    <div id="resultsContainer" class="space-y-4"></div>
+  </section>
+</main>
+<div id="purchaseModal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+    <h3 class="font-serif-jp text-2xl font-bold text-spc-navy mb-2">無料体験は終了です</h3>
+    <p class="text-gray-600 mb-6">「想いみっけ」で、これからも経営者の想いを言葉に変えていきませんか？</p>
+<div class="border-2 border-spc-gold rounded-xl p-4 mb-3">
+  <h4 class="font-bold text-spc-navy mb-2">Lite版（買い切り）</h4>
+  <p class="text-2xl font-bold text-spc-gold mb-2">¥2,980</p>
+  <p class="text-sm text-gray-600 mb-3">無制限利用・4プラットフォーム対応</p>
+  <a href="#" id="liteLink" class="block bg-spc-gold hover-spc-gold text-white text-center py-2 rounded-lg font-medium">noteで購入する</a>
+</div>
+
+<div class="border-2 border-spc-navy rounded-xl p-4 mb-4">
+  <h4 class="font-bold text-spc-navy mb-2">Pro版（月額）</h4>
+  <p class="text-2xl font-bold text-spc-navy mb-2">¥1,480 <span class="text-sm font-normal">/月</span></p>
+  <p class="text-sm text-gray-600 mb-3">ブランドボイス学習・複数アカウント切替</p>
+  <a href="#" id="proLink" class="block bg-spc-navy text-white text-center py-2 rounded-lg font-medium">Stripeで申し込む</a>
+</div>
+
+<button id="closeModal" class="w-full text-gray-500 py-2 text-sm">閉じる</button>
+  </div>
+</div>
+<footer class="bg-spc-navy text-white text-center py-6 mt-12">
+  <p class="text-sm">想いみっけ｜Smile Plus Consulting</p>
+  <p class="text-xs opacity-70 mt-1">考えるを、ひとりにしない</p>
+</footer>
+<script>
+const WORKER_URL = 'https://omoi-mikke.yymmatsu.workers.dev/';
+const FREE_LIMIT = 3;
+
+let selectedPlatform = 'facebook';
+let selectedTone = 'warm';
+let selectedLength = 'standard';
+
+function getUsageCount() {
+  return parseInt(localStorage.getItem('omoi_mikke_usage') || '0', 10);
+}
+
+function incrementUsage() {
+  const count = getUsageCount() + 1;
+  localStorage.setItem('omoi_mikke_usage', count.toString());
+  updateUsageDisplay();
+}
+
+function updateUsageDisplay() {
+  const remaining = Math.max(0, FREE_LIMIT - getUsageCount());
+  document.getElementById('remainingCount').textContent = remaining;
+}
+updateUsageDisplay();
+
+document.querySelectorAll('.platform-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.platform-btn').forEach(b => {
+      b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
+      b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
+    });
+    btn.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+    btn.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
+    selectedPlatform = btn.dataset.platform;
+  });
+});
+
+document.querySelectorAll('.tone-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tone-btn').forEach(b => {
+      b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
+      b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
+    });
+    btn.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+    btn.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
+    selectedTone = btn.dataset.tone;
+  });
+});
+
+document.querySelectorAll('.length-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.length-btn').forEach(b => {
+      b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
+      b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
+    });
+    btn.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+    btn.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
+    selectedLength = btn.dataset.length;
+  });
+});
+
+document.getElementById('generateBtn').addEventListener('click', async () => {
+  const memo = document.getElementById('memo').value.trim();
+  if (!memo) {
+    alert('走り書きメモを入力してください');
+    return;
+  }
+  if (getUsageCount() >= FREE_LIMIT) {
+    document.getElementById('purchaseModal').classList.remove('hidden');
+    return;
+  }
+
+  const payload = {
+    memo,
+    event: document.getElementById('event').value.trim(),
+    emotions: [
+      document.getElementById('emo1').value.trim(),
+      document.getElementById('emo2').value.trim(),
+      document.getElementById('emo3').value.trim()
+    ].filter(Boolean),
+    shareUrl: document.getElementById('shareUrl').value.trim(),
+    platform: selectedPlatform,
+    tone: selectedTone,
+    length: selectedLength
+  };
+
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('loading').classList.remove('hidden');
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('生成に失敗しました');
+    const data = await res.json();
+    renderResults(data.text);
+    incrementUsage();
+  } catch (err) {
+    alert('エラーが発生しました：' + err.message);
+  } finally {
+    document.getElementById('loading').classList.add('hidden');
+  }
+});
+
+function renderResults(text) {
+  const parse = (marker) => {
+    const re = new RegExp('===' + marker + '===([\\s\\S]*?)===', 'i');
+    const m = text.match(re);
+    return m ? m[1].trim() : '';
+  };
+
+  const patterns = [parse('PATTERN1'), parse('PATTERN2'), parse('PATTERN3')];
+  const hook = parse('HOOK');
+  const hashtags = parse('HASHTAGS');
+
+  const container = document.getElementById('resultsContainer');
+  container.innerHTML = '';
+
+  patterns.forEach((p, i) => {
+    if (!p) return;
+    const card = document.createElement('div');
+    card.className = 'output-card bg-white rounded-xl p-5 shadow-md border-l-4 border-spc-gold';
+    let html = '<div class="flex justify-between items-center mb-3">';
+    html += '<h3 class="font-bold text-spc-navy">案 ' + (i + 1) + '</h3>';
+    html += '<button class="copy-btn text-sm bg-spc-navy text-white px-3 py-1 rounded">コピー</button>';
+    html += '</div>';
+    if (i === 0 && hook) {
+      html += '<div class="bg-yellow-50 border border-yellow-200 rounded p-2 mb-3 text-sm"><span class="font-bold">フック：</span>' + hook + '</div>';
+    }
+    html += '<div class="whitespace-pre-wrap text-gray-800 leading-relaxed">' + p + '</div>';
+    if (i === 0 && hashtags) {
+      html += '<div class="mt-4 pt-3 border-t border-gray-200 text-sm text-gray-600">' + hashtags + '</div>';
+    }
+    card.innerHTML = html;
+    card.querySelector('.copy-btn').addEventListener('click', () => {
+      let copyText = p;
+      if (i === 0 && hashtags) copyText += '\n\n' + hashtags;
+      navigator.clipboard.writeText(copyText);
+      card.querySelector('.copy-btn').textContent = 'コピーしました';
+      setTimeout(() => { card.querySelector('.copy-btn').textContent = 'コピー'; }, 1500);
+    });
+    container.appendChild(card);
+  });
+
+  document.getElementById('results').classList.remove('hidden');
+}
+
+document.getElementById('closeModal').addEventListener('click', () => {
+  document.getElementById('purchaseModal').classList.add('hidden');
+});
+</script>
+</body>
+</html>
