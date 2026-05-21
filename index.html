@@ -32,7 +32,7 @@
 </head>
 <body class="min-h-screen">
 <header class="bg-spc-navy text-white py-6 shadow-lg">
-  <div class="max-w-3xl mx-auto px-4 flex items-center gap-3">
+  <div id="headerHome" class="max-w-3xl mx-auto px-4 flex items-center gap-3 cursor-pointer hover:opacity-90 transition-opacity" title="トップへ戻る">
     <img src="favicon.png" alt="" class="w-10 h-10 rounded">
     <div>
       <h1 class="font-serif-jp text-3xl font-bold">
@@ -316,8 +316,44 @@ function renderResults(text) {
   document.getElementById('results').classList.remove('hidden');
 }
 
-document.getElementById('closeModal').addEventListener('click', () => {
-  document.getElementById('purchaseModal').classList.add('hidden');
+document.getElementById('headerHome').addEventListener('click', () => {
+document.getElementById('memo').value = '';
+document.getElementById('event').value = '';
+document.getElementById('emo1').value = '';
+document.getElementById('emo2').value = '';
+document.getElementById('emo3').value = '';
+document.getElementById('shareUrl').value = '';
+document.querySelectorAll('.platform-btn').forEach(b => {
+b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
+b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
+if (b.dataset.platform === 'facebook') {
+b.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+b.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
+}
+});
+selectedPlatform = 'facebook';
+document.querySelectorAll('.tone-btn').forEach(b => {
+b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
+b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
+if (b.dataset.tone === 'warm') {
+b.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+b.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
+}
+});
+selectedTone = 'warm';
+document.querySelectorAll('.length-btn').forEach(b => {
+b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
+b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
+if (b.dataset.length === 'standard') {
+b.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+b.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
+}
+});
+selectedLength = 'standard';
+document.getElementById('results').classList.add('hidden');
+document.getElementById('loading').classList.add('hidden');
+document.getElementById('resultsContainer').innerHTML = '';
+window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
 </body>
