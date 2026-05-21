@@ -43,9 +43,6 @@
   </div>
 </header>
 <main class="max-w-3xl mx-auto px-4 py-8">
-  <div id="usageCounter" class="bg-white rounded-lg p-4 mb-6 border-l-4 border-spc-gold shadow-sm">
-    <p class="text-sm text-gray-700">無料体験：残り <span id="remainingCount" class="font-bold text-spc-navy text-lg">3</span> 回</p>
-  </div>
   <section class="bg-white rounded-xl p-6 shadow-md mb-6">
     <h2 class="font-serif-jp text-xl font-bold text-spc-navy mb-4">あなたの想いを聞かせてください</h2>
 <div class="mb-4">
@@ -220,11 +217,7 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     alert('走り書きメモを入力してください');
     return;
   }
-  if (getUsageCount() >= FREE_LIMIT) {
-    document.getElementById('purchaseModal').classList.remove('hidden');
-    return;
-  }
-
+  
   const payload = {
     memo,
     event: document.getElementById('event').value.trim(),
@@ -251,7 +244,6 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     if (!res.ok) throw new Error('生成に失敗しました');
     const data = await res.json();
     renderResults(data.text);
-    incrementUsage();
   } catch (err) {
     alert('エラーが発生しました：' + err.message);
   } finally {
