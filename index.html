@@ -126,54 +126,16 @@
     <div id="resultsContainer" class="space-y-4"></div>
   </section>
 </main>
-<div id="purchaseModal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
-    <h3 class="font-serif-jp text-2xl font-bold text-spc-navy mb-2">無料体験は終了です</h3>
-    <p class="text-gray-600 mb-6">「想いみっけ」で、これからも経営者の想いを言葉に変えていきませんか？</p>
-<div class="border-2 border-spc-gold rounded-xl p-4 mb-3">
-  <h4 class="font-bold text-spc-navy mb-2">Lite版（買い切り）</h4>
-  <p class="text-2xl font-bold text-spc-gold mb-2">¥2,980</p>
-  <p class="text-sm text-gray-600 mb-3">無制限利用・4プラットフォーム対応</p>
-  <a href="#" id="liteLink" class="block bg-spc-gold hover-spc-gold text-white text-center py-2 rounded-lg font-medium">noteで購入する</a>
-</div>
-
-<div class="border-2 border-spc-navy rounded-xl p-4 mb-4">
-  <h4 class="font-bold text-spc-navy mb-2">Pro版（月額）</h4>
-  <p class="text-2xl font-bold text-spc-navy mb-2">¥1,480 <span class="text-sm font-normal">/月</span></p>
-  <p class="text-sm text-gray-600 mb-3">ブランドボイス学習・複数アカウント切替</p>
-  <a href="#" id="proLink" class="block bg-spc-navy text-white text-center py-2 rounded-lg font-medium">Stripeで申し込む</a>
-</div>
-
-<button id="closeModal" class="w-full text-gray-500 py-2 text-sm">閉じる</button>
-  </div>
-</div>
 <footer class="bg-spc-navy text-white text-center py-6 mt-12">
   <p class="text-sm">想いみっけ｜Smile Plus Consulting</p>
   <p class="text-xs opacity-70 mt-1">考えるを、ひとりにしない</p>
 </footer>
 <script>
 const WORKER_URL = 'https://omoi-mikke.yymmatsu.workers.dev/';
-const FREE_LIMIT = 3;
 
 let selectedPlatform = 'facebook';
 let selectedTone = 'warm';
 let selectedLength = 'standard';
-
-function getUsageCount() {
-  return parseInt(localStorage.getItem('omoi_mikke_usage') || '0', 10);
-}
-
-function incrementUsage() {
-  const count = getUsageCount() + 1;
-  localStorage.setItem('omoi_mikke_usage', count.toString());
-  updateUsageDisplay();
-}
-
-function updateUsageDisplay() {
-  const remaining = Math.max(0, FREE_LIMIT - getUsageCount());
-  document.getElementById('remainingCount').textContent = remaining;
-}
-updateUsageDisplay();
 
 document.querySelectorAll('.platform-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -217,7 +179,7 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     alert('走り書きメモを入力してください');
     return;
   }
-  
+
   const payload = {
     memo,
     event: document.getElementById('event').value.trim(),
@@ -309,43 +271,48 @@ function renderResults(text) {
 }
 
 document.getElementById('headerHome').addEventListener('click', () => {
-document.getElementById('memo').value = '';
-document.getElementById('event').value = '';
-document.getElementById('emo1').value = '';
-document.getElementById('emo2').value = '';
-document.getElementById('emo3').value = '';
-document.getElementById('shareUrl').value = '';
-document.querySelectorAll('.platform-btn').forEach(b => {
-b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
-b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
-if (b.dataset.platform === 'facebook') {
-b.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
-b.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
-}
-});
-selectedPlatform = 'facebook';
-document.querySelectorAll('.tone-btn').forEach(b => {
-b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
-b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
-if (b.dataset.tone === 'warm') {
-b.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
-b.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
-}
-});
-selectedTone = 'warm';
-document.querySelectorAll('.length-btn').forEach(b => {
-b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
-b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
-if (b.dataset.length === 'standard') {
-b.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
-b.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
-}
-});
-selectedLength = 'standard';
-document.getElementById('results').classList.add('hidden');
-document.getElementById('loading').classList.add('hidden');
-document.getElementById('resultsContainer').innerHTML = '';
-window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('memo').value = '';
+  document.getElementById('event').value = '';
+  document.getElementById('emo1').value = '';
+  document.getElementById('emo2').value = '';
+  document.getElementById('emo3').value = '';
+  document.getElementById('shareUrl').value = '';
+
+  document.querySelectorAll('.platform-btn').forEach(b => {
+    b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
+    b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
+    if (b.dataset.platform === 'facebook') {
+      b.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+      b.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
+    }
+  });
+  selectedPlatform = 'facebook';
+
+  document.querySelectorAll('.tone-btn').forEach(b => {
+    b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
+    b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
+    if (b.dataset.tone === 'warm') {
+      b.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+      b.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
+    }
+  });
+  selectedTone = 'warm';
+
+  document.querySelectorAll('.length-btn').forEach(b => {
+    b.classList.remove('border-spc-navy', 'bg-spc-navy', 'text-white');
+    b.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
+    if (b.dataset.length === 'standard') {
+      b.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
+      b.classList.add('border-spc-navy', 'bg-spc-navy', 'text-white');
+    }
+  });
+  selectedLength = 'standard';
+
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('resultsContainer').innerHTML = '';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
 </body>
